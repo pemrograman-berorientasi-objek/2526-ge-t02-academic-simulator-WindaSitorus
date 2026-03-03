@@ -1,11 +1,10 @@
-// File: academic/model/Course.java
 package academic.model;
 
 public class Course {
     private String code;
     private String name;
     private int credits;
-    private String grade; // Asumsi grade disimpan sebagai String (A, B, C, D, E)
+    private String grade;
 
     public Course(String code, String name, int credits, String grade) {
         this.code = code;

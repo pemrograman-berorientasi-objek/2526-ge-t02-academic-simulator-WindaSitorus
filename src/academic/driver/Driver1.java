@@ -1,76 +1,37 @@
 package academic.driver;
 
 /**
- * @author NIM Nama
- * @author NIM Nama
+ * @author 12S24019_Winda N.V.Sitorus
  */
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Scanner;
+import academic.model.Course;
 
-// Kelas Course untuk merepresentasikan data sebuah mata kuliah
-class Course {
-    private String code;
-    private String name;
-    private int credits;
-    private String grade;
-
-    public Course(String code, String name, int credits, String grade) {
-        this.code = code;
-        this.name = name;
-        this.credits = credits;
-        this.grade = grade;
-    }
-
-    // Metode untuk mendapatkan representasi string dari Course dengan separator '|'
-    @Override
-    public String toString() {
-        return code + "|" + name + "|" + credits + "|" + grade;
-    }
-}
-
-// Kelas Driver1 sebagai entry point program
 public class Driver1 {
-
-    public static void main(String[] _args) {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        List<Course> courses = new ArrayList<>(); // Menggunakan ArrayList sebagai penyimpanan dinamis
-
-        System.out.println("Masukkan data course (format: Kode#Nama#SKS#Nilai). Ketik '---' untuk berhenti:");
+        Course[] courses = new Course[100];
+        int count = 0;
 
         while (true) {
-            String line = scanner.nextLine(); // Membaca setiap baris masukan
-
-            // Cek perintah berhenti
-            if (line.equals("---")) {
+            String input = scanner.nextLine();
+            if (input.equals("---")) {
                 break;
             }
 
-            // Memproses baris masukan
-            String[] segments = line.split("#");
-            if (segments.length == 4) {
-                try {
-                    String code = segments[0];
-                    String name = segments[1];
-                    int credits = Integer.parseInt(segments[2]); // Mengubah SKS menjadi integer
-                    String grade = segments[3];
-
-                    Course course = new Course(code, name, credits, grade);
-                    courses.add(course); // Menambahkan objek Course ke dalam list
-                } catch (NumberFormatException e) {
-                    System.err.println("Peringatan: Format SKS tidak valid di baris: " + line + ". Baris ini dilewati.");
-                }
-            } else {
-                System.err.println("Peringatan: Format masukan tidak sesuai (harus 4 segmen dipisah '#') di baris: " + line + ". Baris ini dilewati.");
-            }
+            String[] parts = input.split("#");
+            courses[count++] = new Course(
+                    parts[0],
+                    parts[1],
+                    Integer.parseInt(parts[2]),
+                    parts[3]
+            );
         }
 
-        System.out.println("\nCourses yang tersimpan:");
-        // Menampilkan semua courses yang tersimpan
-        for (Course course : courses) {
-            System.out.println(course); // Menggunakan method toString() dari kelas Course
+        for (int i = 0; i < count; i++) {
+            System.out.println(courses[i]);
         }
 
-        scanner.close(); // Menutup scanner
+        scanner.close();
     }
 }

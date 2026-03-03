@@ -1,37 +1,24 @@
-// File: academic/model/Student.java
 package academic.model;
 
 public class Student {
-    private String id;
+    private String nim;
     private String name;
-    private String year;
+    private int year;
     private String studyProgram;
 
-    public Student(String id, String name, String year, String studyProgram) {
-        this.id = id;
+    public Student(String nim, String name, int year, String studyProgram) {
+        this.nim = nim;
         this.name = name;
         this.year = year;
         this.studyProgram = studyProgram;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getYear() {
-        return year;
-    }
-
-    public String getStudyProgram() {
-        return studyProgram;
+    public String getNim() {
+        return nim;
     }
 
     @Override
     public String toString() {
-        return id + "|" + name + "|" + year + "|" + studyProgram;
+        return nim + "|" + name + "|" + year + "|" + studyProgram;
     }
 }

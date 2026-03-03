@@ -1,72 +1,78 @@
-// File: academic/driver/Driver4.java
-package academic.driver;
-
-import academic.model.Course;
-import academic.model.Student;
-import academic.model.Enrollment;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 /**
  * @author 12S24019_Winda N.V.  Sitorus
  *
  */
-public class Driver4 {
 
-    public static void main(String[] _args) {
-        Scanner input = new Scanner(System.in);
-        List<Object> entities = new ArrayList<>(); // Menggunakan List<Object> untuk menyimpan berbagai tipe entitas
+    package academic.driver;
+
+import java.util.Scanner;
+import academic.model.Course;
+import academic.model.Student;
+import academic.model.Enrollment;
+
+public class Driver4 {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        Course[] courses = new Course[100];
+        Student[] students = new Student[100];
+        Enrollment[] enrollments = new Enrollment[100];
+
+        int courseCount = 0;
+        int studentCount = 0;
+        int enrollmentCount = 0;
 
         while (true) {
-            String line = input.nextLine();
-
-            if (line.equals("---")) {
+            String input = scanner.nextLine();
+            if (input.equals("---")) {
                 break;
             }
 
-            String[] segments = line.split("#");
+            String[] parts = input.split("#");
 
-            // Cek command untuk menentukan tipe entitas
-            String command = segments[0];
+            switch (parts[0]) {
+                case "course-add":
+                    courses[courseCount++] = new Course(
+                            parts[1],
+                            parts[2],
+                            Integer.parseInt(parts[3]),
+                            parts[4]
+                    );
+                    break;
 
-            if ("course-add".equals(command)) {
-                if (segments.length == 5) { // command + 4 data segmen
-                    String code = segments[1];
-                    String name = segments[2];
-                    int credits = Integer.parseInt(segments[3]);
-                    String grade = segments[4];
-                    Course course = new Course(code, name, credits, grade);
-                    entities.add(course);
-                }
-            } else if ("student-add".equals(command)) {
-                if (segments.length == 5) { // command + 4 data segmen
-                    String id = segments[1];
-                    String name = segments[2];
-                    String year = segments[3];
-                    String studyProgram = segments[4];
-                    Student student = new Student(id, name, year, studyProgram);
-                    entities.add(student);
-                }
-            } else if ("enrollment-add".equals(command)) {
-                if (segments.length == 5) { // command + 4 data segmen (grade "None" otomatis)
-                    String courseCode = segments[1];
-                    String studentId = segments[2];
-                    String academicYear = segments[3];
-                    String semester = segments[4];
-                    // Grade akan otomatis diinisialisasi sebagai "None" di konstruktor Enrollment
-                    Enrollment enrollment = new Enrollment(courseCode, studentId, academicYear, semester);
-                    entities.add(enrollment);
-                }
+                case "student-add":
+                    students[studentCount++] = new Student(
+                            parts[1],
+                            parts[2],
+                            Integer.parseInt(parts[3]),
+                            parts[4]
+                    );
+                    break;
+
+                case "enrollment-add":
+                    enrollments[enrollmentCount++] = new Enrollment(
+                            parts[1],
+                            parts[2],
+                            parts[3],
+                            parts[4]
+                    );
+                    break;
             }
-            // Tambahkan penanganan error atau log jika command tidak dikenali atau format salah
         }
 
-        // Tampilkan semua entitas yang tersimpan
-        for (Object entity : entities) {
-            System.out.println(entity.toString());
+        for (int i = 0; i < courseCount; i++) {
+            System.out.println(courses[i]);
         }
 
-        input.close();
+        for (int i = 0; i < studentCount; i++) {
+            System.out.println(students[i]);
+        }
+
+        for (int i = 0; i < enrollmentCount; i++) {
+            System.out.println(enrollments[i]);
+        }
+
+        scanner.close();
     }
 }

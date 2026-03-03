@@ -1,13 +1,11 @@
-// File: academic/driver/Driver3.java
 package academic.driver;
 
 import academic.model.Enrollment;
+import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.ArrayList; // Menggunakan ArrayList karena ukuran array dinamis lebih mudah
 
 /**
- * @author 12S24019 Winda N.V. Sitorus
- *
+ * @author 12S24019_Winda N.V. Sitorus
  */
 public class Driver3 {
 
@@ -19,34 +17,44 @@ public class Driver3 {
             String line = input.nextLine();
 
             if (line.equals("---")) {
-                break; // Hentikan pembacaan input jika baris adalah "---"
+                break; // Stop reading input
             }
 
-            // Pisahkan segmen data menggunakan "#"
-            String[] segments = line.split("#");
+            // --- PERUBAHAN DIMULAI DI SINI ---
+            String[] parts;
+            String originalLineData = line;
 
-            // Pastikan ada 4 segmen data sebelum membuat objek Enrollment
-            if (segments.length == 4) {
-                String courseCode = segments[0];
-                String studentId = segments[1];
-                String academicYear = segments[2];
-                String semester = segments[3];
+            // Check if the line starts with "enrollment-add#" (for compatibility with Driver4-style test input)
+            if (line.startsWith("enrollment-add#")) {
+                // If it does, remove the prefix to get the actual data for Enrollment
+                originalLineData = line.substring("enrollment-add#".length());
+            }
+            
+            // Now parse the (potentially modified) line data
+            parts = originalLineData.split("#");
+            // Input format expected by Enrollment constructor: courseCode#studentId#academicYear#semester (4 parts)
+            if (parts.length == 4) {
+                String courseCode = parts[0];
+                String studentId = parts[1];
+                String academicYear = parts[2];
+                String semester = parts[3];
 
-                // Buat objek Enrollment baru (grade akan otomatis "None")
                 Enrollment enrollment = new Enrollment(courseCode, studentId, academicYear, semester);
-                // Tambahkan enrollment ke ArrayList
                 enrollments.add(enrollment);
             } else {
-                // Opsional: berikan feedback jika format input salah
-                // System.err.println("Format input salah untuk baris: " + line);
+                // Optionally handle malformed input lines
+                // Note: This error will now only trigger if the data *after* "enrollment-add#" is malformed,
+                // or if a line without "enrollment-add#" has incorrect parts.
+                System.err.println("Input format error for data: " + originalLineData);
             }
+            // --- PERUBAHAN BERAKHIR DI SINI ---
         }
 
-        // Setelah input berhenti, tampilkan semua enrollments yang tersimpan
+        input.close(); // Close the scanner to prevent resource leak
+
+        // Display all stored enrollments
         for (Enrollment enrollment : enrollments) {
-            System.out.println(enrollment.toString());
+            System.out.println(enrollment);
         }
-
-        input.close(); // Tutup scanner
     }
 }
